@@ -43,7 +43,14 @@ let score board =
         |_ -> failwith "Not implemented"
 
 let gameState board = 
-     failwith "Not implemented"
+    let b =
+        match b = board with
+        |{Board.state = b} -> "Souths turn"
+        |{Board.state = b} -> "Norths turn"
+        |{Board.state = b} -> "Game ended in draw"
+        |{Board.state = b} -> "South won"
+        |{Board.state = b} -> "North won"
+failwith "Not implemented"
 
  
 [<EntryPoint>]
