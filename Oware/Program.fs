@@ -1,33 +1,5 @@
 ﻿module Oware
 
-type StartingPosition =
-    | South
-    | North 
-
-let getSeeds n board = 
-    let rec get seeds =
-        let housenum = (1, 2, 3, 4, 5, 6)
-        let a, b, c, d, e, f = housenum
-        match housenum with 
-        |seeds -> housenum
-        |_ -> failwith "Not Implemented"
-
-failwith "Not implemented"
-
-let useHouse n board = failwith "Not implemented"
-
-//game should start at the southern end 
-let start position = 
-    match position with 
-    |South -> StartingPosition.South
-    |_ -> failwith "No Player available"
-
-let score board = 
-    failwith "Not implemented"
-
-let gameState board = 
-     failwith "Not implemented"
-
 
 //Player: a player owns houses and seeds
 type Player = 
@@ -40,9 +12,38 @@ type Board =
     {  
         scoreboards: int * int  
         state: string                              
-        players1: Player           
-        players2: Player 
+        player1: Player           
+        player2: Player 
     }
+
+type StartingPosition =
+    | South
+    | North 
+
+let getSeeds n board = 
+        let housenum = (1, 2, 3, 4, 5, 6) //number of houses
+        let a, b, c, d, e, f = housenum   //names of houses
+            match n = housenum && seeds = 4 with 
+            |{Board.player1.houses = housenum; } -> collect(seeds -1)(acc + 1)
+            |_ -> acc 
+        collect 4
+
+let useHouse n board = failwith "Not implemented"
+
+//game should start at the southern end 
+let start position = 
+    match position with 
+    |South -> StartingPosition.South
+    |_ -> failwith "No Player available"
+
+let score board = 
+    let brd =
+        match brd = board with
+        | {Board.scoreboards = board} -> (southscore, northscore)
+        |_ -> failwith "Not implemented"
+
+let gameState board = 
+     failwith "Not implemented"
 
  
 [<EntryPoint>]
