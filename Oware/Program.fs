@@ -1,5 +1,8 @@
 ﻿module Oware
 
+open System.Security.Cryptography.ECCurve
+open System.Security.Cryptography.ECCurve
+
 
 //Player: a player owns houses and seeds
 type Player = 
@@ -20,13 +23,9 @@ type StartingPosition =
     | South
     | North 
 
+ 
 let getSeeds n board = 
-        let housenum = (1, 2, 3, 4, 5, 6) //number of houses
-        let a, b, c, d, e, f = housenum   //names of houses
-            match n = housenum && seeds = 4 with 
-            |{Board.player1.houses = housenum; } -> collect(seeds -1)(acc + 1)
-            |_ -> acc 
-        collect 4
+ failwith "Not implemented"      
 
 let useHouse n board = failwith "Not implemented"
 
@@ -38,19 +37,20 @@ let start position =
 
 let score board = 
     let brd =
-        match brd = board with
-        | {Board.scoreboards = board} -> (southscore, northscore)
+        match board with
+        | {Board.scoreboards = board} -> (southscore`q, northscore)
         |_ -> failwith "Not implemented"
+    brd
 
 let gameState board = 
     let b =
-        match b = board with
+        match board with
         |{Board.state = b} -> "Souths turn"
         |{Board.state = b} -> "Norths turn"
         |{Board.state = b} -> "Game ended in draw"
         |{Board.state = b} -> "South won"
         |{Board.state = b} -> "North won"
-failwith "Not implemented"
+    b
 
  
 [<EntryPoint>]
