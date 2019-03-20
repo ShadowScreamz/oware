@@ -1,9 +1,15 @@
 ﻿module Oware
 
+//open System.Security.Cryptography.ECCurve
+//open System.Security.Cryptography.ECCurve
+
+
+
+
 type StartingPosition =
     
     | South
-    | North
+    | North 
 
 type Player = {
     captured : int
@@ -79,11 +85,38 @@ let start position =
 
 
         
+=======
+ 
+let getSeeds n board = 
+ failwith "Not implemented"      
 
-let score board = failwith "Not implemented"
+let useHouse n board = failwith "Not implemented"
 
-let gameState board = failwith "Not implemented"
+//game should start at the southern end 
+let start position = 
+    match position with 
+    |South -> StartingPosition.South
+    |_ -> failwith "No Player available"
+>>>>>>> f532a42b72caaa0b1ee603dd2dd140a8586239d6
 
+let score board = 
+    let brd =
+        match board with
+        | {Board.scoreboards = board} -> (southscore`q, northscore)
+        |_ -> failwith "Not implemented"
+    brd
+
+let gameState board = 
+    let b =
+        match board with
+        |{Board.state = b} -> "Souths turn"
+        |{Board.state = b} -> "Norths turn"
+        |{Board.state = b} -> "Game ended in draw"
+        |{Board.state = b} -> "South won"
+        |{Board.state = b} -> "North won"
+    b
+
+ 
 [<EntryPoint>]
 let main _ =
     printfn "Hello from F#!"
