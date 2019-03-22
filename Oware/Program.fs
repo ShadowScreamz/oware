@@ -1,9 +1,20 @@
 ﻿module Oware
 
+//open System.Security.Cryptography.ECCurve
+//open System.Security.Cryptography.ECCurve
+
+
+//Player: a player owns houses and seeds
+
+
+//Board: The board contains players, scoreboards and the general state of the game
+
+
 type StartingPosition =
     
     | South
-    | North
+    | North 
+
 
 type Player = {
     captured : int
@@ -23,12 +34,7 @@ type Board = {
     Player2 : Player
     gameState: State}
 
-    
-    /////////////////////////
 
-
-
-    
 
 let getSeeds n board = 
     let {Player1 = P1 ; Player2 = P2} = board
@@ -80,10 +86,30 @@ let start position =
 
         
 
-let score board = failwith "Not implemented"
+ 
+   
+   
 
-let gameState board = failwith "Not implemented"
+//game should start at the southern end 
 
+(*let score board = 
+    let brd =
+        match board with
+        | {Board.scoreboards = board} -> (southscore`q, northscore)
+        |_ -> failwith "Not implemented"
+    brd*)
+
+(*let gameState board = 
+    let b =
+        match board with
+        |{Board.state = b} -> "Souths turn"
+        |{Board.state = b} -> "Norths turn"
+        |{Board.state = b} -> "Game ended in draw"
+        |{Board.state = b} -> "South won"
+        |{Board.state = b} -> "North won"
+    b*)
+
+ 
 [<EntryPoint>]
 let main _ =
     printfn "Hello from F#!"
