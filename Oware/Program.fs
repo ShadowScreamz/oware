@@ -1,57 +1,88 @@
 ﻿module Oware
 
-open System.Security.Cryptography.ECCurve
-open System.Security.Cryptography.ECCurve
+//open System.Security.Cryptography.ECCurve
+
+//open System.Security.Cryptography.ECCurve
+//open System.Security.Cryptography.ECCurve
 
 
-//Player: a player owns houses and seeds
-type Player = 
-    {   houses: int * int * int * int * int *  int
-        seeds: int                                       //48 in total
-    }
 
-//Board: The board contains players, scoreboards and the general state of the game
-type Board = 
-    {  
-        scoreboards: int * int  
-        state: string                              
-        player1: Player           
-        player2: Player 
-    }
-
+//There are two players in the game, either can start in position north or south
 type StartingPosition =
     | South
     | North 
 
+//A player has 6 houses that contain 4 seeds each
+type Player = 
+    {
+        seeds : int
+        house: int*int*int*int*int*int
+    }
+
+//The game can be in different states depending on the player and their position
+type State = 
+    |SouthWon 
+    |NorthWon  
+    |SouthTurn  
+    |NorthTurn  
+    |DrawState
+
+//The board contains two players in different states
+type Board = 
+    {
+        player1 : Player
+        player2 : Player
+        gameState: State
+        score: int * int
+    }
+
+//At the beginning of the game there are 2 players 
+//each player begins with no seeds captured
+//there are 4 seeds in each house
+let start position =
+    let N = {seeds = 0 ; house = 4,4,4,4,4,4 }
+    let S = {seeds = 0 ; house = 4,4,4,4,4,4 }
+    let STATE  = 
+        match position with
+        |South  -> SouthTurn
+        |_ -> NorthTurn
+    let Board = {player1= N ; player2 = S; gameState = STATE; score = (0,0) }
+    Board
  
 let getSeeds n board = 
- failwith "Not implemented"      
+    let {player1 = P1 ; player2 = P2} = board
+    let (a,b,c,d,e,f) = P1.house
+    let (a',b',c',d',e',f') = P2.house
+    match n with
+    |1 -> a
+    |2 -> b
+    |3 -> c
+    |4 -> d
+    |5 -> e
+    |6 -> f
+    |7 -> a'
+    |8 -> b'
+    |9 -> c'
+    |10 -> d'
+    |11 -> e'
+    |12 -> f'
 
+
+let score board = failwith "Not implemented"
+   (* match board with
+    |(southscore, northscore) -> (South, North)
+    |_ -> failwith "Score not updated"*)
+ 
+
+let gameState board = failwith "Not implemented"
+   (* match board with
+    |South -> "Souths turn"
+    |North -> "Norths turn"
+    |DrawState -> "Game ended in draw"
+    |SouthWon -> "South won"
+    |NorthWon -> "North won"*)
+   
 let useHouse n board = failwith "Not implemented"
-
-//game should start at the southern end 
-let start position = 
-    match position with 
-    |South -> StartingPosition.South
-    |_ -> failwith "No Player available"
-
-let score board = 
-    let brd =
-        match board with
-        | {Board.scoreboards = board} -> (southscore`q, northscore)
-        |_ -> failwith "Not implemented"
-    brd
-
-let gameState board = 
-    let b =
-        match board with
-        |{Board.state = b} -> "Souths turn"
-        |{Board.state = b} -> "Norths turn"
-        |{Board.state = b} -> "Game ended in draw"
-        |{Board.state = b} -> "South won"
-        |{Board.state = b} -> "North won"
-    b
-
  
 [<EntryPoint>]
 let main _ =
