@@ -1,46 +1,54 @@
 ﻿module Oware
 
-//open System.Security.Cryptography.ECCurve
-//open System.Security.Cryptography.ECCurve
 
-
-
-
+//There are two players in the game, either can start in position north or south
 type StartingPosition =
     
     | South
-    | North 
+    | North     
 
-type Player = {
-    captured : int
-    House: int*int*int*int*int*int
+//A player has 6 houses that contain 4 seeds each
+type Player = 
+    {
+        seeds : int
+        house: int*int*int*int*int*int
     }
 
-
+//The game can be in different states depending on the player and their position
 type State = 
-    |SouthWon 
-    |NorthWon  
-    |SouthTurn  
-    |NorthTurn  
-    |DrawState 
+    |SouthWon of string
+    |NorthWon of string
+    |SouthTurn of string
+    |NorthTurn of string
+    |DrawState of string
 
-type Board = {
-    Player1 : Player
-    Player2 : Player
-    gameState: State}
+//The board contains two players in different states
+type Board = 
+    {
+        player1 : Player
+        player2 : Player
+        gameState: State
+        score: int * int
+    }
 
-    
+//At the beginning of the game there are 2 players 
+//each player begins with no seeds captured
+//there are 4 seeds in each house
+let start position =
+    let N = {seeds = 0 ; house = 4,4,4,4,4,4 }
+    let S = {seeds = 0 ; house = 4,4,4,4,4,4 }
+    let STATE  = 
+        match position with
+        |South  -> SouthTurn "South's turn"
+        |_ -> NorthTurn "North's turn"
+    let Board = {player1= N ; player2 = S; gameState = STATE; score = (0,0) }
+    Board
 
-
-
-
-    
-
+ 
 let getSeeds n board = 
-    let {Player1 = P1 ; Player2 = P2} = board
-    let (a,b,c,d,e,f) = P1.House
-    let (a',b',c',d',e',f') = P2.House
-
+    let {player1 = P1 ; player2 = P2} = board
+    let (a,b,c,d,e,f) = P1.house
+    let (a',b',c',d',e',f') = P2.house
     match n with
     |1 -> a
     |2 -> b
@@ -52,70 +60,39 @@ let getSeeds n board =
     |8 -> b'
     |9 -> c'
     |10 -> d'
-    |11  -> e'
-    |_ -> f'
+    |11 -> e'
+    |12 -> f'
 
 
 
+let score board = //failwith "Not implemented"
+    let {score = SCORE} = board
+    let (southScore, northScore) = SCORE
+    match board with
+    |{score = (southScore, northScore)} -> SCORE
+    |_ -> failwith "Score not updated"
+    SCORE
 
+let gameState board = failwith "Not implemented"
+  (*  let {gameState = STATE } = board
+    let STATE=
+    match board with
+    |{gameState = SouthTurn _}-> "South's turn"
+    |{gameState = NorthTurn _}-> "North's turn"
+    |{gameState = DrawState _}-> "Game ended in draw"
+    |{gameState = SouthWon  _}-> "South's won"
+    |{gameState = NorthWon  _}-> "North won"
+    STATE*)
+
+       
+   (* match board with
+    |SouthTurn -> "Souths turn"
+    |NorthTurn -> "Norths turn"
+    |DrawState -> "Game ended in draw"
+    |SouthWon -> "South won"
+    |NorthWon -> "North won" *)
    
-    
-
-
 let useHouse n board = failwith "Not implemented"
-
-let start position =
-    let N = { captured = 0 ; House = 4,4,4,4,4,4 }
-    let S = {captured = 0 ; House = 4,4,4,4,4,4 }
-    
-    let STATE  = 
-        match position with
-        |South  -> SouthTurn
-        |_ -> NorthTurn
-    let Board = {Player1= N ; Player2 = S; gameState = STATE }
-    Board
-
-     
-
-        
-
-
-
-
-
-
-        
-=======
- 
-let getSeeds n board = 
- failwith "Not implemented"      
-
-let useHouse n board = failwith "Not implemented"
-
-//game should start at the southern end 
-let start position = 
-    match position with 
-    |South -> StartingPosition.South
-    |_ -> failwith "No Player available"
->>>>>>> f532a42b72caaa0b1ee603dd2dd140a8586239d6
-
-let score board = 
-    let brd =
-        match board with
-        | {Board.scoreboards = board} -> (southscore`q, northscore)
-        |_ -> failwith "Not implemented"
-    brd
-
-let gameState board = 
-    let b =
-        match board with
-        |{Board.state = b} -> "Souths turn"
-        |{Board.state = b} -> "Norths turn"
-        |{Board.state = b} -> "Game ended in draw"
-        |{Board.state = b} -> "South won"
-        |{Board.state = b} -> "North won"
-    b
-
  
 [<EntryPoint>]
 let main _ =
