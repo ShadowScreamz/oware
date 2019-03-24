@@ -21,11 +21,11 @@ type Player =
 
 //The game can be in different states depending on the player and their position
 type State = 
-    |SouthWon 
-    |NorthWon  
-    |SouthTurn  
-    |NorthTurn  
-    |DrawState
+    |SouthWon of string
+    |NorthWon of string
+    |SouthTurn of string
+    |NorthTurn of string
+    |DrawState of string
 
 //The board contains two players in different states
 type Board = 
@@ -44,8 +44,8 @@ let start position =
     let S = {seeds = 0 ; house = 4,4,4,4,4,4 }
     let STATE  = 
         match position with
-        |South  -> SouthTurn
-        |_ -> NorthTurn
+        |South  -> SouthTurn "South's turn"
+        |_ -> NorthTurn "North's turn"
     let Board = {player1= N ; player2 = S; gameState = STATE; score = (0,0) }
     Board
  
@@ -68,19 +68,32 @@ let getSeeds n board =
     |12 -> f'
 
 
-let score board = failwith "Not implemented"
-   (* match board with
-    |(southscore, northscore) -> (South, North)
-    |_ -> failwith "Score not updated"*)
- 
+let score board = //failwith "Not implemented"
+    let {score = SCORE} = board
+    let (southScore, northScore) = SCORE
+    match board with
+    |{score = (southScore, northScore)} -> SCORE
+    |_ -> failwith "Score not updated"
+    SCORE
 
 let gameState board = failwith "Not implemented"
+  (*  let {gameState = STATE } = board
+    let STATE=
+    match board with
+    |{gameState = SouthTurn _}-> "South's turn"
+    |{gameState = NorthTurn _}-> "North's turn"
+    |{gameState = DrawState _}-> "Game ended in draw"
+    |{gameState = SouthWon  _}-> "South's won"
+    |{gameState = NorthWon  _}-> "North won"
+    STATE*)
+
+       
    (* match board with
-    |South -> "Souths turn"
-    |North -> "Norths turn"
+    |SouthTurn -> "Souths turn"
+    |NorthTurn -> "Norths turn"
     |DrawState -> "Game ended in draw"
     |SouthWon -> "South won"
-    |NorthWon -> "North won"*)
+    |NorthWon -> "North won" *)
    
 let useHouse n board = failwith "Not implemented"
  
