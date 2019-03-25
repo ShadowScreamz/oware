@@ -3,7 +3,6 @@
 
 //There are two players in the game, either can start in position north or south
 type StartingPosition =
-    
     | South
     | North     
 
@@ -16,11 +15,11 @@ type Player =
 
 //The game can be in different states depending on the player and their position
 type State = 
-    |SouthWon of string
-    |NorthWon of string
-    |SouthTurn of string
-    |NorthTurn of string
-    |DrawState of string
+    |SouthWon 
+    |NorthWon 
+    |SouthTurn 
+    |NorthTurn 
+    |DrawState 
 
 //The board contains two players in different states
 type Board = 
@@ -39,8 +38,8 @@ let start position =
     let S = {seeds = 0 ; house = 4,4,4,4,4,4 }
     let STATE  = 
         match position with
-        |South  -> SouthTurn "South's turn"
-        |_ -> NorthTurn "North's turn"
+        |South  -> SouthTurn
+        |_ -> NorthTurn 
     let Board = {player1= N ; player2 = S; gameState = STATE; score = (0,0) }
     Board
 
@@ -73,26 +72,43 @@ let score board = //failwith "Not implemented"
     |_ -> failwith "Score not updated"
     SCORE
 
-let gameState board = failwith "Not implemented"
-  (*  let {gameState = STATE } = board
-    let STATE=
-    match board with
-    |{gameState = SouthTurn _}-> "South's turn"
-    |{gameState = NorthTurn _}-> "North's turn"
-    |{gameState = DrawState _}-> "Game ended in draw"
-    |{gameState = SouthWon  _}-> "South's won"
-    |{gameState = NorthWon  _}-> "North won"
-    STATE*)
-
-       
-   (* match board with
+let gameState board =     
+    match board.gameState with
     |SouthTurn -> "Souths turn"
     |NorthTurn -> "Norths turn"
     |DrawState -> "Game ended in draw"
     |SouthWon -> "South won"
-    |NorthWon -> "North won" *)
-   
-let useHouse n board = failwith "Not implemented"
+    |NorthWon -> "North won" 
+
+//function to check whose turn it is
+let turn n board =
+    match n with
+    |1|2|3|4|5|6 -> SouthTurn
+    |_ ->   match n with
+            |7|8|9|10|11|12 -> NorthTurn
+            |_ -> failwith "Game is in neutral"
+//fuction to check if the house is zero
+let checkhousezero n board = 
+    let {player1 = P1 ; player2 = P2} = board
+    let (a,b,c,d,e,f) = P1.house
+    let (a',b',c',d',e',f') = P2.house
+    match n with
+    |1 -> {board.player1 with house = 0,b,c,d,e,f}
+    |2 -> {board.player1 with house = a,0,c,d,e,f}
+    |3 -> {board.player1 with house = a,b,0,d,e,f}
+    |4 -> {board.player1 with house = a,b,c,0,e,f}
+    |5 -> {board.player1 with house = a,b,c,d,0,f}
+    |6 -> {board.player1 with house = a,b,c,d,e,0}
+    |7 -> {board.player2 with house = 0,b',c',d',e',f'}
+    |8 -> {board.player2 with house = a',0,c',d',e',f'}
+    |9 -> {board.player2 with house = a',b',0,d',e',f'}
+    |10 -> {board.player2 with house = a',b',c',0,e',f'}
+    |11 -> {board.player2 with house = a',b',c',d',0,f'}
+    |12 -> {board.player2 with house = a',b',c',d',e',0}
+
+let useHouse n board = failwith "Game is in neutral"
+
+
  
 [<EntryPoint>]
 let main _ =
