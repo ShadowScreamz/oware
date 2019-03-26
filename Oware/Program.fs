@@ -63,7 +63,7 @@ let getSeeds n board =
     |12 -> f'
 
 
-
+/////////
 let score board = //failwith "Not implemented"
     let {score = SCORE} = board
     let (southScore, northScore) = SCORE
@@ -88,6 +88,9 @@ let useHouse n board = // failwith "Game is in neutral"
     let {player1 = P1 ; player2 = P2} = board
     let (a,b,c,d,e,f) = P1.house
     let (a',b',c',d',e',f') = P2.house
+   (* let rec sow P1.house P2.house =
+    match n with
+    |true -> sow (P1.house + 1) (P2.house) *)
     match n with
     |1 -> {board with player1 = {board.player1 with house = 0,b,c,d,e,f}}
     |2 -> {board with player1 = {board.player1 with house = a,0,c,d,e,f}}
@@ -101,7 +104,7 @@ let useHouse n board = // failwith "Game is in neutral"
     |10 -> {board with player2 = {board.player2 with house = a',b',c',0,e',f'}}
     |11 -> {board with player2 = {board.player2 with house = a',b',c',d',0,f'}}
     |12 -> {board with player2 = {board.player2 with house = a',b',c',d',e',0}}
-    |_ -> failwith "Game is in neutral"
+    |_ -> failwith "Game is in neutral" 
 //function to check which house we are using
 let updatehouse n (a,b,c,d,e,f, a',b',c',d',e',f')= 
     match n with
