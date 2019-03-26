@@ -106,7 +106,28 @@ let checkhousezero n board =
     |11 -> {board.player2 with house = a',b',c',d',0,f'}
     |12 -> {board.player2 with house = a',b',c',d',e',0}
 
-let useHouse n board = failwith "Game is in neutral"
+let useHouse n board = 
+
+    let {player1 = P1 ; player2 = P2} = board
+    let (a,b,c,d,e,f) = P1.house
+    let (a',b',c',d',e',f') = P2.house
+    match n with
+    |1 -> {board.player1 with house = 0,b,c,d,e,f}
+    |2 -> {board.player1 with house = a,0,c,d,e,f}
+    |3 -> {board.player1 with house = a,b,0,d,e,f}
+    |4 -> {board.player1 with house = a,b,c,0,e,f}
+    |5 -> {board.player1 with house = a,b,c,d,0,f}
+    |6 -> {board.player1 with house = a,b,c,d,e,0}
+    |7 -> {board.player2 with house = 0,b',c',d',e',f'}
+    |8 -> {board.player2 with house = a',0,c',d',e',f'}
+    |9 -> {board.player2 with house = a',b',0,d',e',f'}
+    |10 -> {board.player2 with house = a',b',c',0,e',f'}
+    |11 -> {board.player2 with house = a',b',c',d',0,f'}
+    |12 -> {board.player2 with house = a',b',c',d',e',0}
+
+
+
+//failwith "Game is in neutral"
 
 
  
