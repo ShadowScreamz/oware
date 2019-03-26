@@ -83,8 +83,10 @@ let gameState board =
 
 //function to turn the board from n to s
 
-let useHouse n board = // failwith "Game is in neutral"
-//fuction to check if the house is zero
+
+
+let useHouse n board = 
+
     let {player1 = P1 ; player2 = P2} = board
     let (a,b,c,d,e,f) = P1.house
     let (a',b',c',d',e',f') = P2.house
@@ -92,6 +94,7 @@ let useHouse n board = // failwith "Game is in neutral"
     match n with
     |true -> sow (P1.house + 1) (P2.house) *)
     match n with
+//failwith "Game is in neutral"
     |1 -> {board with player1 = {board.player1 with house = 0,b,c,d,e,f}}
     |2 -> {board with player1 = {board.player1 with house = a,0,c,d,e,f}}
     |3 -> {board with player1 = {board.player1 with house = a,b,0,d,e,f}}
@@ -131,8 +134,7 @@ let turn n player =
                             |7|8|9|10|11|12 -> true
                             |_ -> failwith "Game is in neutral"
 
-    
-
+ 
 
  
 [<EntryPoint>]
