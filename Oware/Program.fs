@@ -83,15 +83,54 @@ let gameState board =
 
 //function to turn the board from n to s
 
+let useHouse n board = // failwith "Game is in neutral"
+//fuction to check if the house is zero
+    let {player1 = P1 ; player2 = P2} = board
+    let (a,b,c,d,e,f) = P1.house
+    let (a',b',c',d',e',f') = P2.house
+    match n with
 
+    |1 -> {board.player1 with house = 0,b,c,d,e,f}
+    |2 -> {board.player1 with house = a,0,c,d,e,f}
+    |3 -> {board.player1 with house = a,b,0,d,e,f}
+    |4 -> {board.player1 with house = a,b,c,0,e,f}
+    |5 -> {board.player1 with house = a,b,c,d,0,f}
+    |6 -> {board.player1 with house = a,b,c,d,e,0}
+    |7 -> {board.player2 with house = 0,b',c',d',e',f'}
+    |8 -> {board.player2 with house = a',0,c',d',e',f'}
+    |9 -> {board.player2 with house = a',b',0,d',e',f'}
+    |10 -> {board.player2 with house = a',b',c',0,e',f'}
+    |11 -> {board.player2 with house = a',b',c',d',0,f'}
+    |12 -> {board.player2 with house = a',b',c',d',e',0}
 
 let useHouse n board = 
+    let {player1 = P1 ; player2 = P2} = board
+    let (seednum, housenum)= getSeeds n board, n
+    let rec addValue board house=
+        match seednum= 0 with
+        |true ->
+            match (seednum,housenum) with
+            |1 -> addValue(a+1,b,c,d,e,f,a',b',c',d',e',f') (seednum - 1) (housenum + 1)
+            |2 -> addValue(a,b+1,c,d,e,f,a',b',c',d',e',f') (seednum - 1) (housenum + 1)
+            |3 -> addValue(a,b,c+1,d,e,f,a',b',c',d',e',f') (seednum - 1) (housenum + 1)
+            |4 -> addValue(a,b,c,d+1,e,f,a',b',c',d',e',f') (seednum - 1) (housenum + 1)
+            |5 -> addValue(a,b,c,d,e+1,f,a',b',c',d',e',f') (seednum - 1) (housenum + 1)
+            |6 -> addValue(a,b,c,d,e,f+1,a',b',c',d',e',f') (seednum - 1) (housenum + 1)
+            |7 -> addValue(a,b,c,d,e,f,a'+ 1,b',c',d',e',f')(seednum - 1) (housenum + 1)
+            |8 -> addValue(a,b,c,d,e,f,a',b'+1,c',d',e',f')(seednum - 1) (housenum + 1)
+            |9 -> addValue(a,b,c,d,e,f,a',b',c'+1,d',e',f')(seednum - 1) (housenum + 1)
+            |10 -> addValue(a,b,c,d,e,f,a',b',c',d'+1,e',f')(seednum - 1) (housenum + 1)
+            |11 -> addValue(a,b,c,d,e,f,a',b',c',d',e'+1,f') (seednum - 1) (housenum + 1)
+            |12 -> addValue(a,b,c,d,e,f,a',b',c',d',e',f'+1)(seednum - 1) (housenum + 1)
+        |_ -> board
+    addValue 0 board
+
 
     let {player1 = P1 ; player2 = P2} = board
     let (a,b,c,d,e,f) = P1.house
     let (a',b',c',d',e',f') = P2.house
     match n with
-//failwith "Game is in neutral"
+//failwith "Game is in neutral
     |1 -> {board with player1 = {board.player1 with house = 0,b,c,d,e,f}}
     |2 -> {board with player1 = {board.player1 with house = a,0,c,d,e,f}}
     |3 -> {board with player1 = {board.player1 with house = a,b,0,d,e,f}}
@@ -131,9 +170,7 @@ let turn n player =
                             |7|8|9|10|11|12 -> true
                             |_ -> failwith "Game is in neutral"
 
- 
-
- 
+   
 [<EntryPoint>]
 let main _ =
     printfn "Hello from F#!"
