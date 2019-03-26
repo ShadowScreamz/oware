@@ -80,18 +80,11 @@ let gameState board =
     |SouthWon -> "South won"
     |NorthWon -> "North won" 
 
-//function to check whose turn it is
-let turn n player =
-    match player with
-    |SouthTurn ->    match n with
-                    |1|2|3|4|5|6 -> true
-                    |_ ->   NorthTurn  
-                            match n with
-                            |7|8|9|10|11|12 -> true
-                            |_ -> failwith "Game is in neutral"
 
+//function to turn the board from n to s
+
+let useHouse n board = // failwith "Game is in neutral"
 //fuction to check if the house is zero
-let checkhousezero n board = 
     let {player1 = P1 ; player2 = P2} = board
     let (a,b,c,d,e,f) = P1.house
     let (a',b',c',d',e',f') = P2.house
@@ -109,7 +102,6 @@ let checkhousezero n board =
     |11 -> {board with player2 = {board.player2 with house = a',b',c',d',0,f'}}
     |12 -> {board with player2 = {board.player2 with house = a',b',c',d',e',0}}
     |_ -> failwith "Game is in neutral"
-
 //function to check which house we are using
 let updatehouse n (a,b,c,d,e,f, a',b',c',d',e',f')= 
     match n with
@@ -125,11 +117,16 @@ let updatehouse n (a,b,c,d,e,f, a',b',c',d',e',f')=
     |10 -> a,b,c,d,e,f,a',b',c',(d'+1),e',f'
     |11 -> a,b,c,d,e,f,a',b',c',d',(e'+1),f'
     |12 -> a,b,c,d,e,f,a',b',c',d',e',(f'+1)
-    |_ -> failwith "Game is in neutral"
-
-//function to turn the board from n to s
-
-let useHouse n board = failwith "Game is in neutral"
+    |_ -> failwith "Game is in neutral" 
+//function to check whose turn it is
+let turn n player =
+    match player with
+    |SouthTurn ->    match n with
+                    |1|2|3|4|5|6 -> true
+                    |_ ->   NorthTurn  
+                            match n with
+                            |7|8|9|10|11|12 -> true
+                            |_ -> failwith "Game is in neutral"
 
     
 
