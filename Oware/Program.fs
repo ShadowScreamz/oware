@@ -1,16 +1,11 @@
 ﻿module Oware
 
-//open System.Security.Cryptography.ECCurve
-
-//open System.Security.Cryptography.ECCurve
-//open System.Security.Cryptography.ECCurve
-
-
 
 //There are two players in the game, either can start in position north or south
 type StartingPosition =
+    
     | South
-    | North 
+    | North     
 
 //A player has 6 houses that contain 4 seeds each
 type Player = 
@@ -48,6 +43,7 @@ let start position =
         |_ -> NorthTurn "North's turn"
     let Board = {player1= N ; player2 = S; gameState = STATE; score = (0,0) }
     Board
+
  
 let getSeeds n board = 
     let {player1 = P1 ; player2 = P2} = board
@@ -66,6 +62,7 @@ let getSeeds n board =
     |10 -> d'
     |11 -> e'
     |12 -> f'
+
 
 
 let score board = //failwith "Not implemented"
