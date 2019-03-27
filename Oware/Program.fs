@@ -163,6 +163,43 @@ let updatehouse n (a,b,c,d,e,f, a',b',c',d',e',f')=
     |11 -> a,b,c,d,e,f,a',b',c',d',(e'+1),f'
     |12 -> a,b,c,d,e,f,a',b',c',d',e',(f'+1)
     |_ -> failwith "Game is in neutral" 
+
+//The method removes seeds from a given house
+let Collecting n board =
+    let {player1 = P1; player2=P2; gameState = state} = board //extraction 
+    let (a,b,c,d,e,f) = P1.house //extraction
+    let (a',b',c',d',e',f') = P2.house //extraction
+    let numseeds= getSeeds n board //checking how many seeds are in the given house
+    match numseeds>0 with //check that the given house does actually contain seeds
+    |true ->
+        //if it has seeds,then...
+        match state with
+        //check who's turn is it to play. Assuming that Player1 is South
+        |NorthTurn -> match n with
+                    //If gameState dictates that it's North's turn ti play
+                  |7 -> {board.player2 with house = 0,b',c',d',e',f'}
+                  |8 -> {board.player2 with house = a',0,c',d',e',f'}
+                  |9 -> {board.player2 with house = a',b',0,d',e',f'}
+                  |10 -> {board.player2 with house = a',b',c',0,e',f'}
+                  |11 -> {board.player2 with house = a',b',c',d',0,f'}
+                  |12 -> {board.player2 with house = a',b',c',d',e',0}
+                  |_->{board.player1 with house=P1.house}//player2 can't collect on player1's houses
+        |SouthTurn -> match n with//If gameState dictates that it's South's turn ti play
+                  |1 -> {board.player1 with house = a-numseeds,b,c,d,e,f}
+                  |2 -> {board.player1 with house = a,b-numseeds,c,d,e,f}
+                  |3 -> {board.player1 with house = a,b,c-numseeds,d,e,f}
+                  |4 -> {board.player1 with house = a,b,c,d-numseeds,e,f}
+                  |5 -> {board.player1 with house = a,b,c,d,e-numseeds,f}
+                  |6 -> {board.player1 with house = a,b,c,d,e,f-numseeds}
+                  |_-> {board.player2 with house=P2.house}//player1 can't collect on player2's houses
+        |_->{board.player2 with house=P2.house}//other states don't invoke the collection of seeds
+    |_ ->
+        //these are really just for completeness
+        match state with
+        |NorthWon-> {board.player2 with house = P2.house}
+        |SouthWon ->{board.player1 with house = P1.house}
+        |_ ->{board.player2 with house = P2.house}
+
 //function to check whose turn it is
 let turn n player =
     match player with
