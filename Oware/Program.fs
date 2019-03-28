@@ -63,7 +63,7 @@ let getSeeds n board =
     |12 -> f'
 
 
-/////////
+///
 let score board = //failwith "Not implemented"
     let {score = SCORE} = board
     let (southScore, northScore) = SCORE
@@ -110,7 +110,7 @@ let useHouse n board =
         match seednum= 0 with
         |true ->
             match (seednum,housenum) with
-            |1 -> addValue(a+1,b,c,d,e,f,a',b',c',d',e',f') (seednum - 1) (housenum + 1)
+            |1 -> addValue (a+1,b,c,d,e,f,a',b',c',d',e',f') (seednum - 1) (housenum + 1)
             |2 -> addValue(a,b+1,c,d,e,f,a',b',c',d',e',f') (seednum - 1) (housenum + 1)
             |3 -> addValue(a,b,c+1,d,e,f,a',b',c',d',e',f') (seednum - 1) (housenum + 1)
             |4 -> addValue(a,b,c,d+1,e,f,a',b',c',d',e',f') (seednum - 1) (housenum + 1)
@@ -163,6 +163,7 @@ let updatehouse n (a,b,c,d,e,f, a',b',c',d',e',f')=
     |11 -> a,b,c,d,e,f,a',b',c',d',(e'+1),f'
     |12 -> a,b,c,d,e,f,a',b',c',d',e',(f'+1)
     |_ -> failwith "Game is in neutral" 
+    
 
 //The method removes seeds from a given house (Method 1)
 let Collecting n board =
@@ -199,13 +200,51 @@ let Collecting n board =
         |NorthWon-> {board.player2 with house = P2.house}
         |SouthWon ->{board.player1 with house = P1.house}
         |_ ->{board.player2 with house = P2.house}
-   // Method 1
+    
+    
+ // Method 1
 
- //Makin a move (Method 2)
-
+ //Makin a move with the sow methos (function 2)
+ (* LOGIC:
+    now we wanna distribute the seeds, depending on the number of seeds collected,from which house (n).
+    1. So we basically need to go around, starting fron house n+1 and keep droppin a seed
+    2. When we run out of seeds,we need to check how many seeds we have in that last house visited
+    3. We call the Capture function (if seeds are < 4)
+ *)
+let sow n board = //
+    let {player1 = P1; player2=P2; gameState = state} = board //extraction 
+    let (a,b,c,d,e,f) = P1.house //extraction
+    let (a',b',c',d',e',f') = P2.house //extraction
+    let numseeds = getSeeds n board
+    let rec distri (a,b,c,d,e,f,a',b',c',d',e',f') numseeds acc =
+        match state,numseeds=0 with
+        | NorthTurn,true -> {board.player2 with house=(a',b',c',d',e',f')} //North's turn but no more seeds to distribute
+        | NorthTurn,false ->match (n+1)%13 with //the %13 enures that we don't go over 12 for the houses i.e for n+1=13 we have that (n+1)%13=1
+                          |7 -> distri (a,b,c,d,e,f,a'+1,b',c',d',e',f') (numseeds-1) ((acc+1)%13)
+                          |8 -> distri (a,b,c,d,e,f,a',b',c'+1,d',e',f') (numseeds-1) ((acc+1)%13)
+                          |9 -> distri (a,b,c,d,e,f,a',b',c',d'+1,e',f') (numseeds-1) ((acc+1)%13)
+                          |10 -> distri (a,b,c,d,e,f,a',b',c',d',e'+1,f') (numseeds-1) ((acc+1)%13)
+                          |11 -> distri (a,b,c,d,e,f,a',b',c',d',e',f'+1) (numseeds-1) ((acc+1)%13)
+                          |12 -> distri (a,b,c,d,e,f,a+1,b,c,d,e,f) (numseeds-1) ((acc+1)%13)
+                          |_->{board.player2 with house=(a',b',c',d',e',f')}
+        | SouthTurn,true -> {board.player1 with house=(a,b,c,d,e,f)} //South's turn but no more seeds to distribute
+        | SouthTurn,false -> match (n+1)%13 with
+                          |1 -> distri (a+1,b,c,d,e,f,a',b',c',d',e',f') (numseeds-1) ((acc+1)%13)
+                          |2 -> distri (a,b,c+1,d,e,f,a',b',c',d',e',f') (numseeds-1) ((acc+1)%13)
+                          |3 -> distri (a,b,c,d+1,e,f,a',b',c',d',e',f') (numseeds-1) ((acc+1)%13)
+                          |4 -> distri (a,b,c,d,e+1,f,a',b',c',d',e',f') (numseeds-1) ((acc+1)%13)
+                          |5 -> distri (a,b,c,d,e,f+1,a',b',c',d',e',f') (numseeds-1) ((acc+1)%13)
+                          |6 -> distri (a+1,b,c,d,e,f,a',b',c',d',e',f') (numseeds-1) ((acc+1)%13)
+                          |_->{board.player2 with house=(a',b',c',d',e',f')}
+        | _->{board.player2 with house=(a',b',c',d',e',f')}
+    match numseeds>0 with
+    |false ->{board.player2 with house=(a',b',c',d',e',f')}
+    |_-> distri ((a,b,c,d,e,f,a',b',c',d',e',f')) numseeds n
+let useHouse n board=
+    fun collecting n board -> sow n board
 
 //function to check whose turn it is
-let turn n player =
+let turn n player = 
     match player with
     |SouthTurn ->    match n with
                     |1|2|3|4|5|6 -> true
