@@ -164,7 +164,7 @@ let updatehouse n (a,b,c,d,e,f, a',b',c',d',e',f')=
     |12 -> a,b,c,d,e,f,a',b',c',d',e',(f'+1)
     |_ -> failwith "Game is in neutral" 
 
-//The method removes seeds from a given house
+//The method removes seeds from a given house (Method 1)
 let Collecting n board =
     let {player1 = P1; player2=P2; gameState = state} = board //extraction 
     let (a,b,c,d,e,f) = P1.house //extraction
@@ -199,6 +199,10 @@ let Collecting n board =
         |NorthWon-> {board.player2 with house = P2.house}
         |SouthWon ->{board.player1 with house = P1.house}
         |_ ->{board.player2 with house = P2.house}
+   // Method 1
+
+ //Makin a move (Method 2)
+
 
 //function to check whose turn it is
 let turn n player =
