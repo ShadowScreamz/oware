@@ -83,7 +83,54 @@ let gameState board =
 
 //function to turn the board from n to s
 
-let useHouse n board =  failwith "no house given"
+let useHouse n board = // failwith "no house given"
+    //fuction to check if the house is zero
+    let {player1 = P1 ; player2 = P2} = board
+    let (a,b,c,d,e,f) = P1.house
+    let (a',b',c',d',e',f') = P2.house
+    match n with
+    |1 -> {board with player1 = {board.player1 with house = 0,b,c,d,e,f}}
+    |2 -> {board with player1 = {board.player1 with house = a,0,c,d,e,f}}
+    |3 -> {board with player1 = {board.player1 with house = a,b,0,d,e,f}}
+    |4 -> {board with player1 = {board.player1 with house = a,b,c,0,e,f}}
+    |5 -> {board with player1 = {board.player1 with house = a,b,c,d,0,f}}
+    |6 -> {board with player1 = {board.player1 with house = a,b,c,d,e,0}}
+    |7 -> {board with player2 = {board.player2 with house = 0,b',c',d',e',f'}}
+    |8 -> {board with player2 = {board.player2 with house = a',0,c',d',e',f'}}
+    |9 -> {board with player2 = {board.player2 with house = a',b',0,d',e',f'}}
+    |10 -> {board with player2 = {board.player2 with house = a',b',c',0,e',f'}}
+    |11 -> {board with player2 = {board.player2 with house = a',b',c',d',0,f'}}
+    |12 -> {board with player2 = {board.player2 with house = a',b',c',d',e',0}}
+    |_ -> failwith "Game is in neutral"
+
+    let {player1 = P1 ; player2 = P2} = board
+    let (a,b,c,d,e,f) = P1.house
+    let (a',b',c',d',e',f') = P2.house
+    match n with
+    |1 -> {board with player1 = {board.player1 with house = a+1,b,c,d,e,f}}
+    |2 -> {board with player1 = {board.player1 with house = a,b+1,c,d,e,f}}
+    |3 -> {board with player1 = {board.player1 with house = a,b,c+1,d,e,f}}
+    |4 -> {board with player1 = {board.player1 with house = a,b,c,d+1,e,f}}
+    |5 -> {board with player1 = {board.player1 with house = a,b,c,d,e+1,f}}
+    |6 -> {board with player1 = {board.player1 with house = a,b,c,d,e,f+1}}
+    |7 -> {board with player2 = {board.player2 with house = a+1,b',c',d',e',f'}}
+    |8 -> {board with player2 = {board.player2 with house = a',b+1,c',d',e',f'}}
+    |9 -> {board with player2 = {board.player2 with house = a',b',c+1,d',e',f'}}
+    |10 -> {board with player2 = {board.player2 with house = a',b',c',d+1,e',f'}}
+    |11 -> {board with player2 = {board.player2 with house = a',b',c',d',e+1,f'}}
+    |12 -> {board with player2 = {board.player2 with house = a',b',c',d',e',f+1}}
+    |_ -> failwith "Game is in neutral"
+
+    //function to check whose turn it is
+let turn n player =
+    match player with
+    |SouthTurn ->    match n with
+                    |1|2|3|4|5|6 -> true
+                    |_ ->   NorthTurn  
+                            match n with
+                            |7|8|9|10|11|12 -> true
+                            |_ -> failwith "Game is in neutral"
+
     //let (housenum)= getSeeds n board
        // let (a,b,c,d,e,f,a',b',c',d',e',f') = board
        (* let rec addValue (a,b,c,d,e,f,a',b',c',d',e',f')=
@@ -104,31 +151,7 @@ let useHouse n board =  failwith "no house given"
                     |_ -> failwith "no house given"
             |_ -> board
         addValue  *)
-//function to check which house we are using
-let updatehouse n (a,b,c,d,e,f, a',b',c',d',e',f')= 
-    match n with
-    |1 -> (a+1),b,c,d,e,f,a',b',c',d',e',f'
-    |2 -> a,(b+1),c,d,e,f,a',b',c',d',e',f'
-    |3 -> a,b,(c+1),d,e,f,a',b',c',d',e',f'
-    |4 -> a,b,c,(d+1),e,f,a',b',c',d',e',f'
-    |5 -> a,b,c,d,(e+1),f,a',b',c',d',e',f'
-    |6 -> a,b,c,d,e,(f+1),a',b',c',d',e',f'
-    |7 -> a,b,c,d,e,f,(a'+1),b',c',d',e',f'
-    |8 -> a,b,c,d,e,f,a',(b'+1),c',d',e',f'
-    |9 -> a,b,c,d,e,f,a',b',(c'+1),d',e',f'
-    |10 -> a,b,c,d,e,f,a',b',c',(d'+1),e',f'
-    |11 -> a,b,c,d,e,f,a',b',c',d',(e'+1),f'
-    |12 -> a,b,c,d,e,f,a',b',c',d',e',(f'+1)
-    |_ -> failwith "Game is in neutral" 
-//function to check whose turn it is
-let turn n player =
-    match player with
-    |SouthTurn ->    match n with
-                    |1|2|3|4|5|6 -> true
-                    |_ ->   NorthTurn  
-                            match n with
-                            |7|8|9|10|11|12 -> true
-                            |_ -> failwith "Game is in neutral"
+
 
    
 [<EntryPoint>]
